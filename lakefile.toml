@@ -1,0 +1,23 @@
+name = "AoC"
+version = "0.1.0"
+# lintDriver = "batteries/runLinter"
+testRunner = "testDriver"
+defaultTargets = ["WinnowParsers"]
+
+[leanOptions]
+pp.unicode.fun = true # pretty-prints `fun a ↦ b`
+autoImplicit = false
+experimental.module = true
+# linter.missingDocs = false
+# linter.unusedVariables = true
+
+# [[require]]
+# name = "batteries"
+# scope = "leanprover-community"
+# rev = "v4.27.0-rc1"
+
+[[lean_lib]]
+name = "WinnowParsers"
+moreLinkArgs = ["-O3", "-UNDEBUG"]
+buildType = "release"
+# supportInterpreter = true
