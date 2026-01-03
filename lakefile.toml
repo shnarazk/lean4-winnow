@@ -1,7 +1,7 @@
-name = "AoC"
+name = "WinnowParsers"
 version = "0.1.0"
 # lintDriver = "batteries/runLinter"
-testRunner = "testDriver"
+# testRunner = "testDriver"
 defaultTargets = ["WinnowParsers"]
 
 [leanOptions]
