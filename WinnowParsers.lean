@@ -13,6 +13,8 @@ open Std.Internal.Parsec.String
 
 variable {α β γ : Type}
 
+/-- `BEq` instance for `Except` types. Two `Except` values are equal if they are both errors with
+equal values, or both ok with equal values. -/
 instance {ε : Type} [BEq ε] [BEq α] : BEq (Except ε α) where
   beq a b := match a, b with
   | .error x, .error y => x == y
@@ -39,7 +41,7 @@ def whitespaces : Parser Unit := many1 (pchar ' ' <|> pchar '▸') *> return ()
 /-- an optional sequence of space or TAB -/
 def whitespaces? : Parser Unit := many (pchar ' ' <|> pchar '▸') *> return ()
 
-/-- [A-Za-z]+ -/
+/-- Parse one or more ASCII letters [A-Za-z]+ and return them as a string -/
 def alphabets := many1Chars asciiLetter
 
 /-- repeat `ch` and discard the result -/
@@ -60,7 +62,7 @@ def number_p : Parser Int := do
   let s ← many1 digit
   return Int.ofNat (Array.foldl (fun n (c : Char) => n * 10 + c.toNat - '0'.toNat) (0 : Nat) s)
 
-/-- a nugative integer -/
+/-- a negative integer -/
 def number_m : Parser Int := do
   let n ← pchar '-' *> number_p
   return -n
@@ -70,19 +72,19 @@ def number_signed : Parser Int := number_m <|> number_p
 
 #guard (Parser.run number_signed "-21, 8,") == Except.ok (-21)
 
-/-- single digit number -/
+/-- Parse a single digit character and convert it to its numeric value (0-9) -/
 def single_digit := (·.toNat - '0'.toNat) <$> digit
 
 #guard Parser.run single_digit "456" == Except.ok 4
 
 namespace test
 
-/-- alphabets followed by ':' -/
+/-- Parse alphabets followed by a colon ':' and return the alphabets as a string -/
 def label := many1Chars asciiLetter <* pchar ':'
 
 #guard Parser.run label "Game: 0, " == Except.ok "Game"
 
-/-- sequence of "label: number" separated by "," -/
+/-- Parse a sequence of "label: number" entries separated by commas ',' -/
 def fields := separated (separator₀ ' ' *> label *> separator ' ' *> number) (pchar ',')
 
 #guard Parser.run fields "a: 0, bb: 8" == Except.ok #[0, 8]
