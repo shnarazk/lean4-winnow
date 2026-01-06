@@ -1,6 +1,6 @@
 # lean4-winnow
 
-Parser combinator library for [Lean4](https://github.com/leanprover/lean4), inspired by [winnow-rs](https://github.com/winnow-rs/winnow).
+Parser combinator library for Rust programmers using [Lean4](https://github.com/leanprover/lean4), inspired by [winnow-rs](https://github.com/winnow-rs/winnow).
 
 ## Overview
 
