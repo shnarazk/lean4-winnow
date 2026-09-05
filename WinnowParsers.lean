@@ -2,6 +2,7 @@ module
 
 -- public import Batteries
 public import Std.Internal.Parsec
+public import Std.Internal.Parsec.String
 public meta import Std.Internal.Parsec.String
 
 @[expose] public section
